@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Vault — SSC CGL</title>
+<style>
+:root{
+ --bg:#080b13;--surface:#11131e;--surface2:#151827;--border:#252838;
+ --text:#f0eff8;--muted:#85879b;--purple:#a98bff;--purple-soft:#28213f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 78% 18%,#172039 0,transparent 42%),var(--bg);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+header{padding:27px 30px 18px;background:rgba(8,10,17,.94);border-bottom:1px solid #1c2030}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(145deg,#c0a6ff,#7652d5);display:grid;place-items:center;color:#160e2a;font-size:19px;font-weight:900;box-shadow:0 5px 20px #9a76ff33}
+.brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:-.4px}.brand p{font-size:11px;color:#9696aa;margin:2px 0 0}
+.private{font-size:9px;letter-spacing:1.2px;color:#b8b0d4;border:1px solid #302b43;background:#151321;padding:8px 12px;border-radius:30px}
+.private i{display:inline-block;width:6px;height:6px;background:#62dfbb;border-radius:50%;margin-right:7px;vertical-align:1px}
+.searchbox{max-width:770px;position:relative}.searchbox span{position:absolute;left:14px;top:10px;color:#8b8da2;font-size:17px}.search{width:100%;background:#141622;border:1px solid #2b2e3e;border-radius:12px;padding:12px 15px 12px 41px;color:#f4f2ff;font-size:13px;outline:none;box-shadow:0 4px 14px #0003}.search:focus{border-color:#7862b5}
+main{padding:16px 30px 50px;max-width:1600px;margin:auto}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 15px}
+.filter{background:#151723;border:1px solid #292c3c;color:#a7a8ba;padding:8px 13px;border-radius:11px;font-size:10px;cursor:pointer;box-shadow:0 2px 0 #05060a;transition:.15s}
+.filter:hover{border-color:#66528e;color:#eee8ff}.filter.active{background:#a98bff;border-color:#a98bff;color:#1b1230;font-weight:800}
+.meta{font-size:10px;color:#7e8196;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card{position:relative;min-height:112px;background:linear-gradient(145deg,#151722,#10121c);border:1px solid #292b39;border-radius:16px;padding:15px 15px 13px 18px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;box-shadow:0 4px 0 #05060a;transition:transform .16s,border-color .16s,background .16s}
+.card:before{content:"";position:absolute;left:0;top:17px;bottom:17px;width:2px;background:#9270eb;border-radius:0 3px 3px 0;opacity:.85}
+.card:hover{transform:translateY(-2px);border-color:#594b7e;background:linear-gradient(145deg,#1b1b2b,#121522)}
+.tag{display:inline-flex;align-self:flex-start;background:#28223d;color:#bca8ff;border-radius:5px;padding:3px 7px;font-size:8px;font-weight:850;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:9px}
+.card h2{font-size:12px;line-height:1.35;margin:0 0 5px;font-weight:700;color:#f0eef8}
+.filename{font-size:9px;color:#85879b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actions{display:flex;gap:6px;margin-top:10px}
+.btn{font-size:9px;color:#d9d0f8;border:1px solid #40365c;background:#211b32;border-radius:6px;padding:5px 8px;text-decoration:none}
+.btn:hover{background:#33264e;border-color:#7560a8}.btn.secondary{color:#a7a9bb;background:#171a27;border-color:#303447}
+.empty{display:none;text-align:center;color:#898ba0;border:1px dashed #343448;border-radius:14px;padding:35px;font-size:12px}
+footer{border-top:1px solid #202333;margin-top:32px;padding-top:14px;color:#656a80;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){header{padding:20px 16px 16px}main{padding:14px 16px 35px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.private{display:none}}
+@media(max-width:480px){.grid{grid-template-columns:1fr}.card{min-height:105px}.brand h1{font-size:16px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="topline">
+  <div class="brand"><div class="logo">✦</div><div><h1>Study Vault</h1><p>Your personal library for SSC CGL preparation</p></div></div>
+  <div class="private"><i></i> YOUR PRIVATE LIBRARY</div>
+ </div>
+ <div class="searchbox"><span>⌕</span><input class="search" id="search" placeholder="Search subjects, PDFs, topics... (try: History, Polity, Physics)"></div>
+</header>
+<main>
+ <nav class="filters" id="filters">
+  <button class="filter active" data-filter="All">ALL</button>
+  <button class="filter" data-filter="Geography">🌍 Geography</button>
+  <button class="filter" data-filter="Polity">📚 Polity</button>
+  <button class="filter" data-filter="History">🏛 History</button>
+  <button class="filter" data-filter="General Awareness">✨ General Awareness</button>
+  <button class="filter" data-filter="Science">🧪 Science</button>
+  <button class="filter" data-filter="Other">📖 Other</button>
+ </nav>
+ <div class="meta" id="count">16 resources found</div>
+ <section class="grid" id="grid">
+<article class="card" data-category="History" data-search="medieval history 02_medieval_history.pdf history">
+ <span class="tag">History</span><h2>Medieval History</h2><div class="filename">02_Medieval_History.pdf</div>
+ <div class="actions"><a class="btn" href="02_Medieval_History.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="02_Medieval_History.pdf" download>Download</a></div>
+</article><article class="card" data-category="History" data-search="modern history 03_modern_history.pdf history">
+ <span class="tag">History</span><h2>Modern History</h2><div class="filename">03_Modern_History.pdf</div>
+ <div class="actions"><a class="btn" href="03_Modern_History.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="03_Modern_History.pdf" download>Download</a></div>
+</article><article class="card" data-category="Polity" data-search="indian polity 04_polity.pdf polity">
+ <span class="tag">Polity</span><h2>Indian Polity</h2><div class="filename">04_Polity.pdf</div>
+ <div class="actions"><a class="btn" href="04_Polity.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="04_Polity.pdf" download>Download</a></div>
+</article><article class="card" data-category="Geography" data-search="geography 05_geography.pdf geography">
+ <span class="tag">Geography</span><h2>Geography</h2><div class="filename">05_Geography.pdf</div>
+ <div class="actions"><a class="btn" href="05_Geography.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="05_Geography.pdf" download>Download</a></div>
+</article><article class="card" data-category="Geography" data-search="world geography 06_world_geography.pdf geography">
+ <span class="tag">Geography</span><h2>World Geography</h2><div class="filename">06_World_Geography.pdf</div>
+ <div class="actions"><a class="btn" href="06_World_Geography.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="06_World_Geography.pdf" download>Download</a></div>
+</article><article class="card" data-category="Other" data-search="economics 07_economics.pdf other">
+ <span class="tag">Other</span><h2>Economics</h2><div class="filename">07_Economics.pdf</div>
+ <div class="actions"><a class="btn" href="07_Economics.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="07_Economics.pdf" download>Download</a></div>
+</article><article class="card" data-category="General Awareness" data-search="books & authors 10_books_and_authors.pdf general awareness">
+ <span class="tag">General Awareness</span><h2>Books & Authors</h2><div class="filename">10_Books_and_Authors.pdf</div>
+ <div class="actions"><a class="btn" href="10_Books_and_Authors.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="10_Books_and_Authors.pdf" download>Download</a></div>
+</article><article class="card" data-category="Science" data-search="science & technology 11_science_and_technology.pdf science">
+ <span class="tag">Science</span><h2>Science & Technology</h2><div class="filename">11_Science_and_Technology.pdf</div>
+ <div class="actions"><a class="btn" href="11_Science_and_Technology.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="11_Science_and_Technology.pdf" download>Download</a></div>
+</article><article class="card" data-category="Science" data-search="physics 12_physics.pdf science">
+ <span class="tag">Science</span><h2>Physics</h2><div class="filename">12_Physics.pdf</div>
+ <div class="actions"><a class="btn" href="12_Physics.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="12_Physics.pdf" download>Download</a></div>
+</article><article class="card" data-category="Science" data-search="chemistry 13_chemistry.pdf science">
+ <span class="tag">Science</span><h2>Chemistry</h2><div class="filename">13_Chemistry.pdf</div>
+ <div class="actions"><a class="btn" href="13_Chemistry.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="13_Chemistry.pdf" download>Download</a></div>
+</article><article class="card" data-category="Other" data-search="environment 15_environment.pdf other">
+ <span class="tag">Other</span><h2>Environment</h2><div class="filename">15_Environment.pdf</div>
+ <div class="actions"><a class="btn" href="15_Environment.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="15_Environment.pdf" download>Download</a></div>
+</article><article class="card" data-category="Other" data-search="awards & honors 16_award_and_honors.pdf other">
+ <span class="tag">Other</span><h2>Awards & Honors</h2><div class="filename">16_Award_and_Honors.pdf</div>
+ <div class="actions"><a class="btn" href="16_Award_and_Honors.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="16_Award_and_Honors.pdf" download>Download</a></div>
+</article><article class="card" data-category="Other" data-search="computer 17_computer.pdf other">
+ <span class="tag">Other</span><h2>Computer</h2><div class="filename">17_Computer.pdf</div>
+ <div class="actions"><a class="btn" href="17_Computer.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="17_Computer.pdf" download>Download</a></div>
+</article><article class="card" data-category="Other" data-search="static gk 18_static_gk.pdf other">
+ <span class="tag">Other</span><h2>Static GK</h2><div class="filename">18_Static_GK.pdf</div>
+ <div class="actions"><a class="btn" href="18_Static_GK.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="18_Static_GK.pdf" download>Download</a></div>
+</article><article class="card" data-category="General Awareness" data-search="current affairs 20_current_affairs.pdf general awareness">
+ <span class="tag">General Awareness</span><h2>Current Affairs</h2><div class="filename">20_Current_Affairs.pdf</div>
+ <div class="actions"><a class="btn" href="20_Current_Affairs.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="20_Current_Affairs.pdf" download>Download</a></div>
+</article><article class="card" data-category="Other" data-search="cgl 2025 complete pyq cgl2025_compressed (1).pdf other">
+ <span class="tag">Other</span><h2>CGL 2025 Complete PYQ</h2><div class="filename">cgl2025_compressed (1).pdf</div>
+ <div class="actions"><a class="btn" href="cgl2025_compressed%20%281%29.pdf" target="_blank">Open PDF ↗</a><a class="btn secondary" href="cgl2025_compressed%20%281%29.pdf" download>Download</a></div>
+</article>
+ </section>
+ <div class="empty" id="empty">No resources found. Try another search or category.</div>
+ <footer><span>STUDY VAULT · SSC CGL PDF LIBRARY</span><span>YOUR MATERIAL · YOUR PACE</span></footer>
+</main>
+<script>
+let active='All';
+const search=document.getElementById('search');
+const cards=[...document.querySelectorAll('.card')];
+function update(){
+ const q=search.value.toLowerCase();let n=0;
+ cards.forEach(card=>{
+  const show=(active==='All'||card.dataset.category===active)&&card.dataset.search.includes(q);
+  card.style.display=show?'flex':'none';if(show)n++;
+ });
+ document.getElementById('count').textContent=n+' resources found';
+ document.getElementById('empty').style.display=n?'none':'block';
+}
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{
+ active=btn.dataset.filter;
+ document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===btn));
+ update();
+}));
+search.addEventListener('input',update);
+</script>
+</body></html>
